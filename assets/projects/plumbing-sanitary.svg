@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 560" width="800" height="560" font-family="'JetBrains Mono',Consolas,monospace">
+  <defs>
+    <pattern id="m" width="16" height="16" patternUnits="userSpaceOnUse"><path d="M16 0H0V16" fill="none" stroke="#161e27"/></pattern>
+    <pattern id="M" width="80" height="80" patternUnits="userSpaceOnUse"><rect width="80" height="80" fill="url(#m)"/><path d="M80 0H0V80" fill="none" stroke="#1d2833"/></pattern>
+    <g id="wc" fill="#141a21" stroke="#c9d3de" stroke-width="1.2">
+      <rect x="-20" y="0" width="40" height="14" rx="2"/>
+      <ellipse cx="0" cy="36" rx="14" ry="20"/>
+    </g>
+    <g id="lav" fill="#141a21" stroke="#c9d3de" stroke-width="1.2">
+      <rect x="-26" y="-30" width="52" height="30" rx="2"/>
+      <ellipse cx="0" cy="-15" rx="17" ry="10"/>
+      <circle cx="0" cy="-15" r="2" fill="#c9d3de"/>
+    </g>
+  </defs>
+  <rect width="800" height="560" fill="#0e1319"/>
+  <rect x="28" y="28" width="744" height="504" fill="url(#M)"/>
+  <rect x="16" y="16" width="768" height="528" fill="none" stroke="#2a3644"/>
+  <rect x="28" y="28" width="744" height="504" fill="none" stroke="#3a4a5c"/>
+
+  <!-- walls -->
+  <g stroke="#c9d3de" stroke-width="5" fill="none" stroke-linecap="square">
+    <path d="M90 70H710V430H90Z"/>
+    <path d="M400 70V200M400 280V430"/>
+  </g>
+  <!-- stall partitions -->
+  <g stroke="#6f8499" stroke-width="2"><path d="M180 70V168M260 70V168M340 70V168"/></g>
+  <g stroke="#6f8499" fill="none"><path d="M140 168H180M220 168H260M300 168H340"/></g>
+
+  <use href="#wc" x="140" y="74"/><use href="#wc" x="220" y="74"/><use href="#wc" x="300" y="74"/>
+  <use href="#lav" x="160" y="426"/><use href="#lav" x="240" y="426"/><use href="#lav" x="320" y="426"/>
+  <use href="#lav" x="470" y="426"/>
+
+  <!-- shower -->
+  <rect x="580" y="74" width="126" height="126" fill="#141a21" stroke="#c9d3de" stroke-width="1.2"/>
+  <path d="M580 74L706 200M706 74L580 200" stroke="#3a4a5c"/>
+  <circle cx="643" cy="137" r="7" fill="#0e1319" stroke="#c9d3de"/>
+  <text x="643" y="218" fill="#6f8499" font-size="7.5" text-anchor="middle">SHOWER</text>
+  <circle cx="500" cy="300" r="7" fill="none" stroke="#c9d3de"/><path d="M495 300H505M500 295V305" stroke="#c9d3de"/>
+  <text x="512" y="303" fill="#6f8499" font-size="7">FD</text>
+
+  <!-- soil / waste -->
+  <g fill="none" stroke="#d4a85c" stroke-width="2.4">
+    <path d="M140 124V200H660V137H650"/>
+    <path d="M220 124V200M300 124V200"/>
+    <path d="M500 300H560V200"/>
+  </g>
+  <g fill="none" stroke="#d4a85c" stroke-width="1.6" stroke-dasharray="8 4">
+    <path d="M160 382V350H470V382M240 350V382M320 350V382"/>
+    <path d="M470 350H600V200"/>
+  </g>
+  <!-- stack -->
+  <circle cx="660" cy="200" r="11" fill="#0e1319" stroke="#d4a85c" stroke-width="2"/>
+  <text x="678" y="232" fill="#d4a85c" font-size="7.5">SP-1 Ø100</text>
+  <!-- cleanouts -->
+  <g fill="#0e1319" stroke="#c9d3de"><circle cx="112" cy="200" r="6"/><circle cx="140" cy="350" r="6"/></g>
+  <path d="M118 200H140M146 350H160" stroke="#d4a85c" stroke-width="1.6"/>
+  <g font-size="7" fill="#6f8499"><text x="100" y="188">CO</text><text x="126" y="338">CO</text></g>
+
+  <!-- vent -->
+  <path d="M140 110V96M220 110V96M300 110V96M140 96H380V250H640" stroke="#6f8499" stroke-width="1.2" stroke-dasharray="2 3" fill="none"/>
+  <text x="302" y="258" fill="#6f8499" font-size="7">VP Ø50</text>
+
+  <!-- cold water -->
+  <g fill="none" stroke="#7fa7c9" stroke-width="1.5">
+    <path d="M700 312H120V92H136M120 312V398H160M200 312V92H216M280 312V92H296M240 312V398M320 312V398M470 312V398M620 312V174H632"/>
+  </g>
+  <g fill="#7fa7c9"><circle cx="700" cy="312" r="3.5"/></g>
+
+  <!-- labels -->
+  <g font-size="7.5">
+    <text x="420" y="194" fill="#d4a85c">SOIL Ø100 @ 2%</text>
+    <text x="340" y="344" fill="#d4a85c">WASTE Ø50</text>
+    <text x="600" y="326" fill="#7fa7c9">CW Ø25</text>
+  </g>
+  <g font-size="8" fill="#6f8499" text-anchor="middle" letter-spacing="1"><text x="245" y="262">MALE TOILET</text><text x="560" y="408">SHOWER / LAV</text></g>
+
+  <!-- legend -->
+  <g transform="translate(60 474)" font-size="7.5" fill="#6f8499">
+    <path d="M0 6H30" stroke="#d4a85c" stroke-width="2.4"/><text x="38" y="9">SOIL</text>
+    <path d="M90 6H120" stroke="#d4a85c" stroke-width="1.6" stroke-dasharray="8 4"/><text x="128" y="9">WASTE</text>
+    <path d="M0 24H30" stroke="#6f8499" stroke-width="1.2" stroke-dasharray="2 3"/><text x="38" y="27">VENT</text>
+    <path d="M90 24H120" stroke="#7fa7c9" stroke-width="1.5"/><text x="128" y="27">COLD WATER</text>
+  </g>
+
+  <!-- title block -->
+  <rect x="552" y="482" width="220" height="50" fill="#0e1319" stroke="#3a4a5c"/>
+  <path d="M690 482V532M552 507H690" stroke="#3a4a5c"/>
+  <text x="559" y="498" font-size="8" fill="#c9d3de" letter-spacing=".5">PLUMBING &amp; SANITARY</text>
+  <text x="559" y="523" font-size="7" fill="#6f8499" letter-spacing=".5">SCALE 1:50 · J.A.B.</text>
+  <text x="731" y="512" font-size="14" fill="#d4a85c" text-anchor="middle">P-101</text>
+</svg>

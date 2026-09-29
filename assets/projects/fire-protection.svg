@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 560" width="800" height="560" font-family="'JetBrains Mono',Consolas,monospace">
+  <defs>
+    <pattern id="m" width="16" height="16" patternUnits="userSpaceOnUse"><path d="M16 0H0V16" fill="none" stroke="#161e27"/></pattern>
+    <pattern id="M" width="80" height="80" patternUnits="userSpaceOnUse"><rect width="80" height="80" fill="url(#m)"/><path d="M80 0H0V80" fill="none" stroke="#1d2833"/></pattern>
+    <g id="h"><circle r="46" fill="none" stroke="#1f2c39" stroke-dasharray="3 3"/><circle r="6" fill="#0e1319" stroke="#c9d3de" stroke-width="1.2"/><circle r="1.8" fill="#c9d3de"/></g>
+    <g id="row"><use href="#h" x="200"/><use href="#h" x="300"/><use href="#h" x="400"/><use href="#h" x="500"/><use href="#h" x="600"/></g>
+  </defs>
+  <rect width="800" height="560" fill="#0e1319"/>
+  <rect x="28" y="28" width="744" height="504" fill="url(#M)"/>
+  <rect x="16" y="16" width="768" height="528" fill="none" stroke="#2a3644"/>
+  <rect x="28" y="28" width="744" height="504" fill="none" stroke="#3a4a5c"/>
+
+  <!-- walls -->
+  <rect x="80" y="64" width="620" height="386" fill="none" stroke="#c9d3de" stroke-width="5"/>
+
+  <!-- branch lines -->
+  <g stroke="#d4a85c" stroke-width="1.6" fill="none">
+    <path d="M130 120H630M130 210H630M130 300H630M130 390H630"/>
+  </g>
+  <!-- cross main -->
+  <path d="M130 110V420" stroke="#d4a85c" stroke-width="3.2" fill="none"/>
+
+  <use href="#row" y="120"/><use href="#row" y="210"/><use href="#row" y="300"/><use href="#row" y="390"/>
+
+  <!-- riser -->
+  <circle cx="130" cy="420" r="10" fill="#0e1319" stroke="#d4a85c" stroke-width="2.2"/>
+  <path d="M124 414L136 426M136 414L124 426" stroke="#d4a85c" stroke-width="1.2"/>
+  <path d="M124 344L136 354V344L124 354Z" fill="#0e1319" stroke="#c9d3de"/>
+  <text x="146" y="424" fill="#d4a85c" font-size="8">FR-1 Ø100</text>
+  <text x="96" y="352" fill="#6f8499" font-size="7">CV</text>
+
+  <!-- dims -->
+  <g stroke="#6f8499" stroke-width=".8" fill="none">
+    <path d="M200 84H300M200 78V90M300 78V90"/>
+    <path d="M660 120V210M654 120H666M654 210H666"/>
+  </g>
+  <g fill="#6f8499" font-size="7.5" text-anchor="middle">
+    <text x="250" y="80">3 000 TYP.</text>
+    <text x="672" y="168" transform="rotate(90 672 168)">3 000</text>
+  </g>
+
+  <!-- labels -->
+  <g font-size="7.5" fill="#d4a85c">
+    <text x="136" y="165" transform="rotate(-90 136 165)">Ø65</text>
+    <text x="540" y="115">Ø25</text><text x="540" y="205">Ø25</text>
+    <text x="540" y="295">Ø25</text><text x="540" y="385">Ø25</text>
+    <text x="340" y="115">Ø32</text>
+  </g>
+  <text x="400" y="260" fill="#6f8499" font-size="8" text-anchor="middle" letter-spacing="1">LIGHT HAZARD · 20 HEADS</text>
+
+  <!-- legend -->
+  <g transform="translate(60 474)" font-size="7.5" fill="#6f8499">
+    <use href="#h" x="8" y="8"/><text x="22" y="11">PENDENT SPRINKLER 68°C</text>
+    <path d="M0 28H30" stroke="#d4a85c" stroke-width="1.6"/><text x="38" y="31">BRANCH LINE</text>
+    <path d="M150 28H180" stroke="#d4a85c" stroke-width="3.2"/><text x="188" y="31">CROSS MAIN</text>
+  </g>
+
+  <!-- title block -->
+  <rect x="552" y="482" width="220" height="50" fill="#0e1319" stroke="#3a4a5c"/>
+  <path d="M690 482V532M552 507H690" stroke="#3a4a5c"/>
+  <text x="559" y="498" font-size="8" fill="#c9d3de" letter-spacing=".5">FIRE PROTECTION LAYOUT</text>
+  <text x="559" y="523" font-size="7" fill="#6f8499" letter-spacing=".5">SCALE 1:100 · J.A.B.</text>
+  <text x="731" y="512" font-size="14" fill="#d4a85c" text-anchor="middle">FP-101</text>
+</svg>

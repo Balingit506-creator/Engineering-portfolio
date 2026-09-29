@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 560" width="800" height="560" font-family="'JetBrains Mono',Consolas,monospace">
+  <defs>
+    <pattern id="m" width="16" height="16" patternUnits="userSpaceOnUse"><path d="M16 0H0V16" fill="none" stroke="#161e27"/></pattern>
+    <pattern id="M" width="80" height="80" patternUnits="userSpaceOnUse"><rect width="80" height="80" fill="url(#m)"/><path d="M80 0H0V80" fill="none" stroke="#1d2833"/></pattern>
+    <g id="d"><rect x="-9" y="-9" width="18" height="18" fill="#0e1319" stroke="#d4a85c"/><path d="M-9-9L9 9M9-9L-9 9" stroke="#d4a85c" stroke-width=".7"/></g>
+    <g id="v"><rect x="-20" y="-11" width="40" height="22" fill="#141a21" stroke="#c9d3de" stroke-width="1.1"/><path d="M-20 11L20-11" stroke="#3a4a5c"/></g>
+  </defs>
+  <rect width="800" height="560" fill="#0e1319"/>
+  <rect x="28" y="28" width="744" height="504" fill="url(#M)"/>
+  <rect x="16" y="16" width="768" height="528" fill="none" stroke="#2a3644"/>
+  <rect x="28" y="28" width="744" height="504" fill="none" stroke="#3a4a5c"/>
+
+  <!-- column grid -->
+  <g stroke="#3a4a5c" stroke-dasharray="14 4 2 4" fill="none">
+    <path d="M110 66V460M290 66V460M470 66V460M650 66V460"/>
+    <path d="M72 100H720M72 270H720M72 440H720"/>
+  </g>
+  <g fill="#0e1319" stroke="#6f8499">
+    <circle cx="110" cy="54" r="11"/><circle cx="290" cy="54" r="11"/><circle cx="470" cy="54" r="11"/><circle cx="650" cy="54" r="11"/>
+    <circle cx="58" cy="100" r="11"/><circle cx="58" cy="270" r="11"/><circle cx="58" cy="440" r="11"/>
+  </g>
+  <g fill="#6f8499" font-size="10" text-anchor="middle">
+    <text x="110" y="58">1</text><text x="290" y="58">2</text><text x="470" y="58">3</text><text x="650" y="58">4</text>
+    <text x="58" y="104">A</text><text x="58" y="274">B</text><text x="58" y="444">C</text>
+  </g>
+  <g fill="#3a4a5c">
+    <rect x="104" y="94" width="12" height="12"/><rect x="284" y="94" width="12" height="12"/><rect x="464" y="94" width="12" height="12"/><rect x="644" y="94" width="12" height="12"/>
+    <rect x="104" y="264" width="12" height="12"/><rect x="284" y="264" width="12" height="12"/><rect x="464" y="264" width="12" height="12"/><rect x="644" y="264" width="12" height="12"/>
+    <rect x="104" y="434" width="12" height="12"/><rect x="284" y="434" width="12" height="12"/><rect x="464" y="434" width="12" height="12"/><rect x="644" y="434" width="12" height="12"/>
+  </g>
+
+  <!-- return air (dashed) -->
+  <path d="M96 232H690" stroke="#7fa7c9" stroke-width="1.2" stroke-dasharray="7 4" fill="none"/>
+  <g stroke="#7fa7c9" fill="none"><rect x="366" y="225" width="28" height="14"/><rect x="546" y="225" width="28" height="14"/></g>
+  <text x="200" y="246" fill="#7fa7c9" font-size="7.5">RA 800×400</text>
+
+  <!-- main supply trunk -->
+  <path d="M90 176H450L470 180H700V198H470L450 202H90Z" fill="rgba(212,168,92,.12)" stroke="#d4a85c" stroke-width="1.4"/>
+  <path d="M74 189H90" stroke="#d4a85c" stroke-width="1.4"/><path d="M84 184L90 189L84 194" fill="none" stroke="#d4a85c"/>
+  <text x="200" y="170" fill="#d4a85c" font-size="8">SA 1200×400</text>
+  <text x="560" y="170" fill="#d4a85c" font-size="8">SA 900×350</text>
+  <text x="36" y="182" fill="#6f8499" font-size="6.5">FROM</text><text x="36" y="192" fill="#6f8499" font-size="6.5">AHU-2</text>
+
+  <!-- branches up -->
+  <g stroke="#d4a85c" stroke-width="1.2" fill="none">
+    <path d="M200 176V138M140 138H260M140 138V130M260 138V130"/>
+    <path d="M380 176V138M320 138H440M320 138V130M440 138V130"/>
+    <path d="M560 176V138M500 138H620M500 138V130M620 138V130"/>
+  </g>
+  <use href="#d" x="140" y="121"/><use href="#d" x="260" y="121"/>
+  <use href="#d" x="320" y="121"/><use href="#d" x="440" y="121"/>
+  <use href="#d" x="500" y="121"/><use href="#d" x="620" y="121"/>
+
+  <!-- branches down with VAV -->
+  <g stroke="#d4a85c" stroke-width="1.2" fill="none">
+    <path d="M200 202V300M380 202V300M560 202V300"/>
+    <path d="M200 322V350M150 350H250M150 350V372M250 350V372"/>
+    <path d="M380 322V350M330 350H430M330 350V372M430 350V372"/>
+    <path d="M560 322V350M510 350H610M510 350V372M610 350V372"/>
+  </g>
+  <use href="#v" x="200" y="311"/><use href="#v" x="380" y="311"/><use href="#v" x="560" y="311"/>
+  <g fill="#c9d3de" font-size="7" text-anchor="middle">
+    <text x="236" y="300">VAV-01</text><text x="416" y="300">VAV-02</text><text x="596" y="300">VAV-03</text>
+  </g>
+  <use href="#d" x="150" y="381"/><use href="#d" x="250" y="381"/>
+  <use href="#d" x="330" y="381"/><use href="#d" x="430" y="381"/>
+  <use href="#d" x="510" y="381"/><use href="#d" x="610" y="381"/>
+
+  <!-- dampers -->
+  <g stroke="#c9d3de" stroke-width="1.2"><path d="M193 260H207M373 260H387M553 260H567"/></g>
+  <text x="212" y="263" fill="#6f8499" font-size="6.5">VD</text>
+
+  <text x="380" y="418" fill="#6f8499" font-size="8" text-anchor="middle" letter-spacing="1">OPEN OFFICE · LEVEL 2</text>
+
+  <!-- title block -->
+  <rect x="552" y="482" width="220" height="50" fill="#0e1319" stroke="#3a4a5c"/>
+  <path d="M690 482V532M552 507H690" stroke="#3a4a5c"/>
+  <text x="559" y="498" font-size="8" fill="#c9d3de" letter-spacing=".5">COMMERCIAL DUCT SYSTEM</text>
+  <text x="559" y="523" font-size="7" fill="#6f8499" letter-spacing=".5">SCALE 1:100 · J.A.B.</text>
+  <text x="731" y="512" font-size="14" fill="#d4a85c" text-anchor="middle">M-201</text>
+</svg>

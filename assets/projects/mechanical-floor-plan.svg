@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 560" width="800" height="560" font-family="'JetBrains Mono',Consolas,monospace">
+  <defs>
+    <pattern id="m" width="16" height="16" patternUnits="userSpaceOnUse"><path d="M16 0H0V16" fill="none" stroke="#161e27"/></pattern>
+    <pattern id="M" width="80" height="80" patternUnits="userSpaceOnUse"><rect width="80" height="80" fill="url(#m)"/><path d="M80 0H0V80" fill="none" stroke="#1d2833"/></pattern>
+    <g id="valve"><path d="M-6-5L6 5V-5L-6 5Z" fill="#0e1319" stroke="#c9d3de"/></g>
+    <g id="ch">
+      <rect width="230" height="92" fill="#141a21" stroke="#c9d3de" stroke-width="1.3"/>
+      <path d="M150 0V92M0 46H150" stroke="#3a4a5c"/>
+      <circle cx="40" cy="23" r="14" fill="none" stroke="#6f8499"/><circle cx="40" cy="69" r="14" fill="none" stroke="#6f8499"/>
+      <circle cx="110" cy="23" r="14" fill="none" stroke="#6f8499"/><circle cx="110" cy="69" r="14" fill="none" stroke="#6f8499"/>
+      <rect x="164" y="16" width="50" height="60" fill="none" stroke="#6f8499" stroke-dasharray="4 3"/>
+    </g>
+    <g id="pump">
+      <circle r="17" fill="#141a21" stroke="#c9d3de" stroke-width="1.3"/>
+      <path d="M-10 8L0-12L10 8Z" fill="none" stroke="#6f8499"/>
+      <rect x="-12" y="20" width="24" height="26" fill="none" stroke="#6f8499"/>
+    </g>
+  </defs>
+  <rect width="800" height="560" fill="#0e1319"/>
+  <rect x="28" y="28" width="744" height="504" fill="url(#M)"/>
+  <rect x="16" y="16" width="768" height="528" fill="none" stroke="#2a3644"/>
+  <rect x="28" y="28" width="744" height="504" fill="none" stroke="#3a4a5c"/>
+
+  <!-- room -->
+  <g stroke="#c9d3de" stroke-width="5" fill="none" stroke-linecap="square">
+    <path d="M70 70H710V440H620M560 440H70V70"/>
+  </g>
+  <path d="M560 440V380A60 60 0 0 1 620 440" stroke="#6f8499" fill="none"/>
+  <!-- equipment pads -->
+  <g fill="none" stroke="#3a4a5c" stroke-dasharray="3 3">
+    <rect x="98" y="100" width="254" height="116"/><rect x="98" y="244" width="254" height="116"/>
+  </g>
+
+  <use href="#ch" x="110" y="112"/>
+  <use href="#ch" x="110" y="256"/>
+  <g font-size="9" fill="#c9d3de" text-anchor="middle">
+    <text x="185" y="236">CH-01 · 150 TR</text><text x="185" y="380">CH-02 · 150 TR</text>
+  </g>
+
+  <!-- headers -->
+  <g fill="none" stroke-width="2.2">
+    <path d="M340 132H420V150H676" stroke="#d4a85c"/>
+    <path d="M340 276H440V150" stroke="#d4a85c"/>
+    <path d="M340 190H676" stroke="#7fa7c9" stroke-dasharray="9 5"/>
+    <path d="M340 334H400V190" stroke="#7fa7c9" stroke-dasharray="9 5"/>
+    <path d="M500 150V300M580 150V300M660 150V300" stroke="#d4a85c"/>
+  </g>
+  <use href="#valve" x="378" y="132"/><use href="#valve" x="378" y="276"/>
+  <use href="#valve" x="500" y="240" transform="rotate(90 500 240)"/>
+  <use href="#valve" x="580" y="240" transform="rotate(90 580 240)"/>
+  <use href="#valve" x="660" y="240" transform="rotate(90 660 240)"/>
+
+  <use href="#pump" x="500" y="318"/><use href="#pump" x="580" y="318"/><use href="#pump" x="660" y="318"/>
+  <g font-size="8" fill="#c9d3de" text-anchor="middle">
+    <text x="500" y="382">P-01</text><text x="580" y="382">P-02</text><text x="660" y="382">P-03 (SB)</text>
+  </g>
+
+  <!-- labels -->
+  <g font-size="7.5">
+    <text x="560" y="143" fill="#d4a85c">CHWS Ø200</text>
+    <text x="560" y="184" fill="#7fa7c9">CHWR Ø200</text>
+  </g>
+  <text x="390" y="420" fill="#6f8499" font-size="9" text-anchor="middle" letter-spacing="1">MECHANICAL PLANT ROOM</text>
+
+  <!-- legend -->
+  <g transform="translate(60 474)" font-size="7.5" fill="#6f8499">
+    <path d="M0 6H30" stroke="#d4a85c" stroke-width="2"/><text x="38" y="9">CHILLED WATER SUPPLY</text>
+    <path d="M0 24H30" stroke="#7fa7c9" stroke-width="2" stroke-dasharray="6 4"/><text x="38" y="27">CHILLED WATER RETURN</text>
+    <use href="#valve" x="226" y="6"/><text x="238" y="9">GATE VALVE</text>
+  </g>
+
+  <!-- title block -->
+  <rect x="552" y="482" width="220" height="50" fill="#0e1319" stroke="#3a4a5c"/>
+  <path d="M690 482V532M552 507H690" stroke="#3a4a5c"/>
+  <text x="559" y="498" font-size="8" fill="#c9d3de" letter-spacing=".5">MECHANICAL FLOOR PLAN</text>
+  <text x="559" y="523" font-size="7" fill="#6f8499" letter-spacing=".5">SCALE 1:50 · J.A.B.</text>
+  <text x="731" y="512" font-size="14" fill="#d4a85c" text-anchor="middle">M-301</text>
+</svg>

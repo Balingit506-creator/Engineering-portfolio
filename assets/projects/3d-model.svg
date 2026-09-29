@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 560" width="800" height="560" font-family="'JetBrains Mono',Consolas,monospace">
+  <defs>
+    <pattern id="m" width="16" height="16" patternUnits="userSpaceOnUse"><path d="M16 0H0V16" fill="none" stroke="#161e27"/></pattern>
+    <pattern id="M" width="80" height="80" patternUnits="userSpaceOnUse"><rect width="80" height="80" fill="url(#m)"/><path d="M80 0H0V80" fill="none" stroke="#1d2833"/></pattern>
+    <marker id="a" viewBox="0 0 10 6" refX="10" refY="3" markerWidth="8" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 3L0 6Z" fill="#c9d3de"/></marker>
+    <linearGradient id="top" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2a2a22"/><stop offset="1" stop-color="#1c1f1e"/></linearGradient>
+    <linearGradient id="right" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#18202a"/><stop offset="1" stop-color="#121820"/></linearGradient>
+    <linearGradient id="left" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1e2833"/><stop offset="1" stop-color="#161d26"/></linearGradient>
+    <clipPath id="hole"><ellipse cx="426" cy="185" rx="49" ry="28"/></clipPath>
+  </defs>
+  <rect width="800" height="560" fill="#0e1319"/>
+  <rect x="28" y="28" width="744" height="504" fill="url(#M)"/>
+  <rect x="16" y="16" width="768" height="528" fill="none" stroke="#2a3644"/>
+  <rect x="28" y="28" width="744" height="504" fill="none" stroke="#3a4a5c"/>
+
+  <!-- ground shadow -->
+  <ellipse cx="426" cy="330" rx="210" ry="46" fill="#0a0d11" opacity=".7"/>
+
+  <!-- hidden edges -->
+  <g stroke="#3a4a5c" stroke-dasharray="6 4" fill="none">
+    <path d="M400 100V180L573.2 280M400 180L278.8 250"/>
+  </g>
+
+  <!-- faces -->
+  <g stroke="#c9d3de" stroke-width="1.5" stroke-linejoin="round">
+    <path d="M278.8 170L452 270V350L278.8 250Z" fill="url(#left)"/>
+    <path d="M452 270L573.2 200V280L452 350Z" fill="url(#right)"/>
+    <path d="M400 100L573.2 200L452 270L278.8 170Z" fill="url(#top)"/>
+  </g>
+  <!-- chamfer highlights -->
+  <path d="M286 170L452 266L566 200" stroke="#d4a85c" stroke-width=".8" opacity=".45" fill="none"/>
+
+  <!-- bore -->
+  <ellipse cx="426" cy="185" rx="49" ry="28" fill="#07090c" stroke="#d4a85c" stroke-width="1.5"/>
+  <g clip-path="url(#hole)" fill="none">
+    <path d="M377 200A49 28 0 0 0 475 200" stroke="#3a4a5c"/>
+    <path d="M392 185V230M460 185V230" stroke="#1d2833"/>
+    <ellipse cx="426" cy="185" rx="49" ry="28" fill="url(#top)" opacity=".25"/>
+  </g>
+  <!-- counterbore holes on right face -->
+  <g fill="#07090c" stroke="#c9d3de" stroke-width="1">
+    <ellipse cx="491" cy="296" rx="8" ry="11" transform="rotate(-30 491 296)"/>
+    <ellipse cx="539" cy="268" rx="8" ry="11" transform="rotate(-30 539 268)"/>
+  </g>
+
+  <!-- centre lines -->
+  <g stroke="#6f8499" stroke-width=".8" stroke-dasharray="12 3 2 3" fill="none">
+    <path d="M362 148L490 222M490 148L362 222"/>
+  </g>
+
+  <!-- dimensions -->
+  <g stroke="#c9d3de" stroke-width=".8" fill="none">
+    <path d="M278.8 250L254.6 264M452 350L427.8 364"/>
+    <path d="M258 262L431 362" marker-start="url(#a)" marker-end="url(#a)"/>
+    <path d="M452 350L476 364M573.2 280L597 294"/>
+    <path d="M473 362L594 292" marker-start="url(#a)" marker-end="url(#a)"/>
+    <path d="M573.2 200L602 200M573.2 280L602 280"/>
+    <path d="M596 200V280" marker-start="url(#a)" marker-end="url(#a)"/>
+  </g>
+  <g fill="#c9d3de" font-size="9" text-anchor="middle">
+    <text x="330" y="330" transform="rotate(30 330 330)">200</text>
+    <text x="546" y="344" transform="rotate(-30 546 344)">140</text>
+    <text x="612" y="244">80</text>
+  </g>
+  <path d="M468 172L520 118H640" stroke="#c9d3de" stroke-width=".8" fill="none"/>
+  <circle cx="468" cy="172" r="2" fill="#c9d3de"/>
+  <text x="526" y="113" fill="#c9d3de" font-size="8.5">Ø80 THRU</text>
+
+  <!-- axis triad -->
+  <g transform="translate(96 440)" stroke-width="1.4" fill="none">
+    <path d="M0 0L34 20" stroke="#d4a85c"/><path d="M0 0L-34 20" stroke="#7fa7c9"/><path d="M0 0V-40" stroke="#c9d3de"/>
+  </g>
+  <g font-size="8"><text x="134" y="466" fill="#d4a85c">X</text><text x="52" y="466" fill="#7fa7c9">Y</text><text x="92" y="394" fill="#c9d3de">Z</text></g>
+
+  <text x="426" y="412" fill="#6f8499" font-size="9" text-anchor="middle" letter-spacing="1.5">ISOMETRIC VIEW · MOUNTING BLOCK</text>
+
+  <!-- title block -->
+  <rect x="552" y="482" width="220" height="50" fill="#0e1319" stroke="#3a4a5c"/>
+  <path d="M690 482V532M552 507H690" stroke="#3a4a5c"/>
+  <text x="559" y="498" font-size="8" fill="#c9d3de" letter-spacing=".5">3D MECHANICAL MODEL</text>
+  <text x="559" y="523" font-size="7" fill="#6f8499" letter-spacing=".5">ISO · NTS · J.A.B.</text>
+  <text x="731" y="512" font-size="14" fill="#d4a85c" text-anchor="middle">3D-008</text>
+</svg>
