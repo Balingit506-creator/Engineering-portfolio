@@ -371,7 +371,7 @@
     return !msg;
   };
 
-  const inputs = $$("input, textarea", form);
+  const inputs = $$(".field input, .field textarea", form); // skips the _gotcha spam trap
   inputs.forEach((input) => {
     input.addEventListener("blur", () => { if (input.value) validateField(input); });
     input.addEventListener("input", () => {
@@ -405,9 +405,14 @@
         const res = await fetch(endpoint, {
           method: "POST",
           headers: { "Content-Type": "application/json", Accept: "application/json" },
-          body: JSON.stringify(data)
+          body: JSON.stringify({ ...data, _subject: `Portfolio enquiry from ${data.name}` })
         });
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        if (!res.ok) {
+          // Formspree explains rejections as { errors: [{ message }] }
+          const body = await res.json().catch(() => ({}));
+          const reason = body.errors?.map((er) => er.message).join(" ");
+          throw new Error(reason || `HTTP ${res.status}`);
+        }
         setStatus("Thank you — your message has been sent. I’ll get back to you soon.", "success");
       } else {
         // No backend configured: hand off to the visitor's email app.
@@ -419,8 +424,9 @@
       form.reset();
       $$(".field", form).forEach((f) => f.classList.remove("is-valid", "has-error"));
       inputs.forEach((i) => i.removeAttribute("aria-invalid"));
-    } catch {
-      setStatus(`Sorry, your message couldn’t be sent. Please try again or email ${CONTACT_EMAIL}.`, "error");
+    } catch (err) {
+      const reason = err.message.startsWith("HTTP") || err instanceof TypeError ? "" : ` (${err.message})`;
+      setStatus(`Sorry, your message couldn’t be sent${reason}. Please try again or email ${CONTACT_EMAIL}.`, "error");
     } finally {
       submit.disabled = false;
       submitLabel.textContent = "Send message";

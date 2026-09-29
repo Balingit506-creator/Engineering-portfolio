@@ -419,12 +419,18 @@
         </div>
 
         <!--
-          Contact form: set data-endpoint to a form service URL (e.g. Formspree) to send
-          messages directly. Without an endpoint it opens the visitor's email app with the
-          message pre-filled.
+          Contact form: submissions go to Formspree (data-endpoint) and are forwarded to
+          506balingit@gmail.com. action/method are a fallback for when JavaScript is off.
+          Without an endpoint it opens the visitor's email app with the message pre-filled.
         -->
-        <form class="form reveal" id="contact-form" novalidate data-endpoint="https://formspree.io/f/xdekblok" aria-labelledby="form-title">
+        <form class="form reveal" id="contact-form" novalidate action="https://formspree.io/f/xdekblok" method="POST" data-endpoint="https://formspree.io/f/xdekblok" aria-labelledby="form-title">
           <h3 class="form__title" id="form-title">Send a message</h3>
+
+          <!-- Spam trap: hidden from people, bots fill it in and Formspree discards the message -->
+          <div class="visually-hidden" aria-hidden="true">
+            <label for="f-gotcha">Leave this empty</label>
+            <input id="f-gotcha" name="_gotcha" type="text" tabindex="-1" autocomplete="off">
+          </div>
 
           <div class="field">
             <label for="f-name">Name</label>

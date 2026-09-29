@@ -20,7 +20,7 @@ Open `index.html` directly, or serve the folder (recommended so the video and PD
 - Popup details (overview, objective, process, tools, specs, result): edit the `PROJECTS` object at the top of `js/main.js`, keyed by the card's `data-project`.
 
 ## Contact form
-Without a backend, "Send message" opens the visitor's email app pre-filled to 506balingit@gmail.com.
-To receive messages directly, create a free form endpoint (e.g. Formspree) and set it on the form:
-
-    <form id="contact-form" ... data-endpoint="https://formspree.io/f/XXXXXXX">
+Messages are sent through Formspree (form `xdekblok`) and forwarded to 506balingit@gmail.com.
+The endpoint is set on the form in `index.html` (`data-endpoint`, plus `action` as a no-JavaScript fallback).
+A hidden `_gotcha` field filters out spam bots. If `data-endpoint` is left empty, "Send message" opens the
+visitor's email app instead.
