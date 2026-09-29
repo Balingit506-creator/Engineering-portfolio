@@ -7,7 +7,6 @@
   --bg: #0b0e12;
   --bg-2: #0f1318;
   --surface: #141a21;
-  --surface-2: #19202a;
   --line: rgba(236, 233, 226, 0.10);
   --line-strong: rgba(236, 233, 226, 0.22);
   --text: #ece9e2;
@@ -15,7 +14,6 @@
   --muted: #979ca4;
   --accent: #d4a85c;          /* drafting brass */
   --accent-soft: rgba(212, 168, 92, 0.14);
-  --blueprint: #7fa7c9;
   --danger: #e5877a;
   --success: #8fc6a0;
 
@@ -171,14 +169,21 @@ input, textarea { font: inherit; color: inherit; }
   height: var(--nav-h);
   display: flex; align-items: center;
   border-bottom: 1px solid transparent;
-  transition: background-color var(--t) var(--ease), border-color var(--t) var(--ease), backdrop-filter var(--t) var(--ease);
+  transition: border-color var(--t) var(--ease);
 }
-.nav.is-scrolled {
+/* Blur lives on a pseudo-element: backdrop-filter on .nav itself would make it
+   the containing block for the fixed mobile menu, clipping it to the bar. */
+.nav::before {
+  content: "";
+  position: absolute; inset: 0; z-index: -1;
   background: rgba(11, 14, 18, 0.82);
   backdrop-filter: blur(14px) saturate(140%);
   -webkit-backdrop-filter: blur(14px) saturate(140%);
-  border-bottom-color: var(--line);
+  opacity: 0;
+  transition: opacity var(--t) var(--ease);
 }
+.nav.is-scrolled { border-bottom-color: var(--line); }
+.nav.is-scrolled::before { opacity: 1; }
 .nav__inner { display: flex; align-items: center; justify-content: space-between; }
 
 .nav__logo { display: inline-flex; align-items: center; padding: 6px 0; }
@@ -234,6 +239,7 @@ input, textarea { font: inherit; color: inherit; }
 
 @media (max-width: 860px) {
   .nav__toggle { display: block; z-index: 2; }
+  .nav__logo { position: relative; z-index: 2; }
   .nav__menu {
     position: fixed; inset: 0;
     flex-direction: column; justify-content: center; align-items: flex-start;
@@ -445,7 +451,7 @@ input, textarea { font: inherit; color: inherit; }
   border-radius: var(--radius);
   overflow: hidden;
   position: relative;
-  transition: border-color var(--t) var(--ease), transform var(--t) var(--ease), background-color var(--t) var(--ease);
+  transition: border-color var(--t) var(--ease), background-color var(--t) var(--ease);
 }
 /* accent line that draws across the top on hover */
 .card__btn::after {
@@ -611,7 +617,7 @@ input, textarea { font: inherit; color: inherit; }
   border-radius: 50%;
   transform: translateY(-3px);
 }
-.skill { border-bottom: 1px solid var(--line); }
+.skill { position: relative; border-bottom: 1px solid var(--line); }
 .skill__btn {
   width: 100%;
   display: flex; align-items: center; justify-content: space-between; gap: 16px;
@@ -628,7 +634,6 @@ input, textarea { font: inherit; color: inherit; }
   transition: transform var(--t) var(--ease), color var(--t) var(--ease);
 }
 .skill__info {
-  display: grid;
   max-height: 0;
   overflow: hidden;
   opacity: 0;
@@ -644,7 +649,6 @@ input, textarea { font: inherit; color: inherit; }
 .skill:hover .skill__btn::after { transform: rotate(45deg); color: var(--accent); }
 .skill.is-open .skill__info,
 .skill:hover .skill__info { max-height: 140px; opacity: 1; padding: 0 24px 18px 10px; }
-.skill { position: relative; }
 .skill::before {
   content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 2px;
   background: var(--accent);
@@ -668,8 +672,6 @@ input, textarea { font: inherit; color: inherit; }
 .timeline {
   position: relative;
   display: grid; gap: clamp(56px, 7vw, 88px);
-  padding-left: 0;
-  list-style: none;
 }
 .timeline::before {
   content: "";
@@ -810,13 +812,11 @@ a.social-link:hover { color: var(--accent); border-color: var(--accent); }
 .field.has-error input, .field.has-error textarea { border-color: var(--danger); }
 .field.has-error input:focus, .field.has-error textarea:focus { box-shadow: 0 0 0 3px rgba(229, 135, 122, 0.18); }
 .field.is-valid input, .field.is-valid textarea { border-color: rgba(143, 198, 160, 0.55); }
-.field__error { min-height: 1.25em; font-size: 0.8125rem; color: var(--danger); }
-.field__error:empty { min-height: 0; }
+.field__error { font-size: 0.8125rem; color: var(--danger); }
 
 .form__submit { justify-self: start; min-width: 200px; }
 .form__submit[disabled] { opacity: 0.6; cursor: progress; }
-.form__status { font-size: 0.9375rem; min-height: 1.5em; }
-.form__status:empty { min-height: 0; }
+.form__status { font-size: 0.9375rem; }
 .form__status.is-success { color: var(--success); }
 .form__status.is-error { color: var(--danger); }
 

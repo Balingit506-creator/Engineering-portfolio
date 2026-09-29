@@ -7,16 +7,17 @@ Open `index.html` directly, or serve the folder (recommended so the video and PD
 
     npx serve .        # or: python -m http.server
 
-## Files to add
+## Assets
 | Path | What |
 |---|---|
-| `assets/engineering-background.mp4` | Hero video (1920×1080, H.264, muted, ~10–20 s loop, ideally < 8 MB). Until it exists, the blueprint image `assets/hero-fallback.svg` is shown. |
-| `assets/Juaren_A_Balingit_Resume.pdf` | Resume used by every "Download resume" button. |
-| `assets/portrait.jpg` (optional) | Replace `assets/portrait-placeholder.svg` in the About section (4:5 ratio). |
+| `assets/floor-plan-bg.mp4` | Hero background video (muted loop, from Pexels: https://www.pexels.com/video/7646791/). If it fails to load, `assets/hero-fallback.svg` is shown. |
+| `assets/JAB506.png` | Portrait in the About section (4:5 ratio). |
+| `assets/Juaren_A_Balingit_Resume.pdf` | Resume used by every "Download resume" button — **add this file**. |
+| `assets/projects/*.svg` | Project images. |
 
-## Replacing project images and text
-- Images: `assets/projects/*.svg` are illustrative drawing sheets. Export your real drawings (PNG/JPG/SVG, ~1600×1120, 10:7 ratio) and update the `src` in `index.html` **and** `image` in `js/main.js`.
-- Modal content (overview, objective, process, tools, specs, result): edit the `PROJECTS` object at the top of `js/main.js`.
+## Editing projects
+- Card number, category, title, image and short description: edit the card in `index.html`. The project popup reuses these.
+- Popup details (overview, objective, process, tools, specs, result): edit the `PROJECTS` object at the top of `js/main.js`, keyed by the card's `data-project`.
 
 ## Contact form
 Without a backend, "Send message" opens the visitor's email app pre-filled to 506balingit@gmail.com.
