@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { ActivityIndicator, Alert, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { Button, Field } from '@/components/ui';
-import { emptyProfile, getProfile, saveProfile, type Credential, type Job, type Profile } from '@/lib/content';
+import { emptyProfile, getProfile, saveProfile, type Credential, type Job, type Profile, type Service } from '@/lib/content';
 import { colors, fonts } from '@/lib/theme';
 
 const lines = (text: string) => text.split('\n').map((l) => l.trim()).filter(Boolean);
@@ -13,6 +13,7 @@ const message = (e: unknown) => (e instanceof Error ? e.message : String(e));
 type Form = {
   availability: string;
   facts: string;
+  services: Service[];
   lead: string;
   traits: string;
   jobs: (Omit<Job, 'bullets'> & { bullets: string })[];
@@ -22,6 +23,7 @@ type Form = {
 const toForm = (p: Profile): Form => ({
   availability: p.availability,
   facts: p.facts.map((f) => `${f.label}: ${f.value}`).join('\n'),
+  services: p.services,
   lead: p.about.lead,
   traits: p.about.traits.join('\n'),
   jobs: p.experience.map((j) => ({ ...j, bullets: j.bullets.join('\n') })),
@@ -34,6 +36,7 @@ const toProfile = (f: Form): Profile => ({
     const at = line.indexOf(':');
     return at === -1 ? { label: line, value: '' } : { label: line.slice(0, at).trim(), value: line.slice(at + 1).trim() };
   }),
+  services: f.services.map((s) => ({ title: s.title.trim(), text: s.text.trim() })).filter((s) => s.title),
   about: { lead: f.lead.trim(), traits: lines(f.traits) },
   experience: f.jobs
     .map((j) => ({ period: j.period.trim(), role: j.role.trim(), org: j.org.trim(), bullets: lines(j.bullets) }))
@@ -60,7 +63,9 @@ export default function SiteContent() {
     setForm((f) => ({ ...f, jobs: f.jobs.map((j, k) => (k === i ? { ...j, ...patch } : j)) }));
   const setCred = (i: number, patch: Partial<Credential>) =>
     setForm((f) => ({ ...f, credentials: f.credentials.map((c, k) => (k === i ? { ...c, ...patch } : c)) }));
-  const remove = (key: 'jobs' | 'credentials', i: number) =>
+  const setService = (i: number, patch: Partial<Service>) =>
+    setForm((f) => ({ ...f, services: f.services.map((s, k) => (k === i ? { ...s, ...patch } : s)) }));
+  const remove = (key: 'jobs' | 'credentials' | 'services', i: number) =>
     setForm((f) => ({ ...f, [key]: f[key].filter((_, k) => k !== i) }));
 
   const save = async () => {
@@ -92,6 +97,16 @@ export default function SiteContent() {
         <Text style={styles.section}>Intro facts</Text>
         <Field label="Facts" value={form.facts} onChangeText={set('facts')} multiline hint="One per line as Label: value. License, Experience and Based in also feed the hero stats." />
 
+        <Text style={styles.section}>What I can help with</Text>
+        {form.services.map((s, i) => (
+          <View key={i} style={styles.block}>
+            <Field label="Title" value={s.title} onChangeText={(v) => setService(i, { title: v })} placeholder="HVAC drafting" />
+            <Field label="Description" value={s.text} onChangeText={(v) => setService(i, { text: v })} multiline />
+            <Button title="Remove" variant="danger" onPress={() => remove('services', i)} />
+          </View>
+        ))}
+        <Button title="+ Add service" variant="ghost" onPress={() => set('services')([...form.services, { title: '', text: '' }])} />
+
         <Text style={styles.section}>About</Text>
         <Field label="Paragraph" value={form.lead} onChangeText={set('lead')} multiline />
         <Field label="Strengths" value={form.traits} onChangeText={set('traits')} multiline hint="One per line." />
@@ -108,7 +123,8 @@ export default function SiteContent() {
         ))}
         <Button title="+ Add job" variant="ghost" onPress={() => set('jobs')([...form.jobs, { period: '', role: '', org: '', bullets: '' }])} />
 
-        <Text style={styles.section}>Education & license</Text>
+        <Text style={styles.section}>Education, license & training</Text>
+        <Text style={styles.hint}>Add seminars and certificates here too (OSH, fire safety, AutoCAD, manufacturer trainings).</Text>
         {form.credentials.map((c, i) => (
           <View key={i} style={styles.block}>
             <Field label="Year(s)" value={c.period} onChangeText={(v) => setCred(i, { period: v })} placeholder="2024" />
@@ -142,6 +158,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: colors.line,
   },
+  hint: { color: colors.muted, fontSize: 13, lineHeight: 18, marginBottom: 16 },
   block: {
     borderWidth: 1,
     borderColor: colors.line,

@@ -37,6 +37,12 @@ insert into public.site_content (key, value) values ('profile', $json$
     { "label": "Focus",      "value": "HVAC · CAD Drafting · Facilities" },
     { "label": "Based in",   "value": "General Santos City, PH" }
   ],
+  "services": [
+    { "title": "HVAC drafting",          "text": "Duct layouts, diffuser placement, equipment schedules and sections, coordinated with the architectural background." },
+    { "title": "Mechanical plans",       "text": "Plant rooms, piping, plumbing and fire-protection layouts drawn to drafting standards and ready for review." },
+    { "title": "As-built & revisions",   "text": "Updating drawings to match what was installed, with clean revision clouds and sheet control." },
+    { "title": "Facility documentation", "text": "Inspection records, PM schedules, RCA reports and equipment logs that are clear and easy to audit." }
+  ],
   "about": {
     "lead": "Registered Mechanical Engineer with over a year and a half of combined experience in facility engineering and AutoCAD drafting. I’ve kept a mall’s HVAC, pumps, generators and plumbing running, coordinated contractors and service providers, and produced the mechanical and HVAC drawings that projects are built from.",
     "traits": ["Detail-oriented", "Problem solving", "Clear communication", "Leadership", "Time management", "Willing to do fieldwork and site inspections"]

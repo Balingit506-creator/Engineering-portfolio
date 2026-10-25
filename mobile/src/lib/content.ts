@@ -3,9 +3,11 @@ import { supabase } from './supabase';
 // Matches the "profile" document in supabase/site-content.sql.
 export type Job = { period: string; role: string; org: string; bullets: string[] };
 export type Credential = { period: string; title: string; org: string };
+export type Service = { title: string; text: string };
 export type Profile = {
   availability: string;
   facts: { label: string; value: string }[];
+  services: Service[];
   about: { lead: string; traits: string[] };
   experience: Job[];
   credentials: Credential[];
@@ -14,6 +16,7 @@ export type Profile = {
 export const emptyProfile: Profile = {
   availability: '',
   facts: [],
+  services: [],
   about: { lead: '', traits: [] },
   experience: [],
   credentials: [],

@@ -57,7 +57,7 @@ export default function ProjectList() {
             <Pressable onPress={() => router.push('/content')} style={({ pressed }) => [styles.contentLink, pressed && { opacity: 0.7 }]}>
               <View style={{ flex: 1 }}>
                 <Text style={styles.contentTitle}>Site content</Text>
-                <Text style={styles.contentSub}>Availability, intro facts, About, Experience, Education</Text>
+                <Text style={styles.contentSub}>Availability, facts, services, About, Experience, Education</Text>
               </View>
               <Text style={styles.headerAction}>Edit →</Text>
             </Pressable>

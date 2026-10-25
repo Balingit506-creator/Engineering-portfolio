@@ -265,7 +265,7 @@ import { remoteEnabled, fetchProjects, fetchProfile, fileUrl, previewSource } fr
   const stagger = (group) => {
     Array.from(group.children).forEach((el, i) => el.style.setProperty("--reveal-delay", `${(i % 2) * 90}ms`));
   };
-  $$(".work__grid, .skills__grid").forEach(stagger);
+  $$(".work__grid, .skills__grid, .services__grid").forEach(stagger);
   $$(".reveal").forEach(reveal);
 
   /* ------------------------------------------------------------------
@@ -462,7 +462,7 @@ import { remoteEnabled, fetchProjects, fetchProfile, fileUrl, previewSource } fr
   };
 
   const renderCredentials = (creds) => {
-    const li = renderJob({ period: creds.map((c) => c.period).filter(Boolean).at(-1) ?? "", role: "Education & License", bullets: [] });
+    const li = renderJob({ period: creds.map((c) => c.period).filter(Boolean).at(-1) ?? "", role: "Education, License & Training", bullets: [] });
     const list = $(".timeline__list", li);
     list.classList.add("timeline__list--creds");
     list.replaceChildren(...creds.map((c) => {
@@ -485,6 +485,19 @@ import { remoteEnabled, fetchProjects, fetchProfile, fileUrl, previewSource } fr
         const v = stat(dt.textContent.toLowerCase());
         if (v && dt.nextElementSibling.id !== "hero-projects") dt.nextElementSibling.textContent = v.split("·")[0].trim();
       });
+    }
+    if (p.services?.length) {
+      const items = p.services.map((s, i) => {
+        const li = el("li"); li.className = "service reveal";
+        const num = el("span", String(i + 1).padStart(2, "0")); num.className = "service__num"; num.setAttribute("aria-hidden", "true");
+        const title = el("h3", s.title); title.className = "service__title";
+        const text = el("p", s.text); text.className = "service__text";
+        li.append(num, title, text);
+        return li;
+      });
+      $("#services-grid").replaceChildren(...items);
+      stagger($("#services-grid"));
+      items.forEach(reveal);
     }
     if (p.about?.lead) $("#about-lead").textContent = p.about.lead;
     if (p.about?.traits?.length) $("#about-traits").replaceChildren(...p.about.traits.map((t) => el("li", t)));
