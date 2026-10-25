@@ -10,6 +10,21 @@
   <meta property="og:description" content="Engineering ideas, drawn with precision. CAD drafting, HVAC systems and facility engineering.">
   <meta property="og:type" content="website">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Juaren A. Balingit",
+    "jobTitle": "Mechanical Engineer / AutoCAD Operator",
+    "email": "mailto:506balingit@gmail.com",
+    "telephone": "+63 948 732 5272",
+    "address": { "@type": "PostalAddress", "addressLocality": "General Santos City", "addressCountry": "PH" },
+    "alumniOf": { "@type": "CollegeOrUniversity", "name": "Mindanao Polytechnic College" },
+    "hasCredential": { "@type": "EducationalOccupationalCredential", "name": "Registered Mechanical Engineer", "recognizedBy": { "@type": "Organization", "name": "Professional Regulation Commission (PRC), Philippines" } },
+    "knowsAbout": ["HVAC systems", "AutoCAD drafting", "Facility engineering", "Preventive maintenance", "Technical documentation"],
+    "sameAs": ["https://www.facebook.com/profile.php?id=61593869482601"]
+  }
+  </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -97,7 +112,8 @@
           <p>I keep learning with every project: better drafting standards, sharper coordination, and a deeper understanding of the mechanical systems behind each line.</p>
         </div>
         <dl class="intro__facts reveal">
-          <div><dt>Discipline</dt><dd>Mechanical Engineering</dd></div>
+          <div><dt>License</dt><dd>PRC Registered Mechanical Engineer · 2024</dd></div>
+          <div><dt>Experience</dt><dd>1.5+ years · Facilities &amp; CAD</dd></div>
           <div><dt>Focus</dt><dd>HVAC · CAD Drafting · Facilities</dd></div>
           <div><dt>Based in</dt><dd>General Santos City, PH</dd></div>
         </dl>
@@ -113,7 +129,9 @@
           <p class="section-sub reveal">A collection of engineering and CAD projects focused on precision, clarity, and practical design.</p>
         </header>
 
-        <ul class="work__grid" role="list">
+        <!-- These cards are the fallback. When Supabase is configured, js/main.js
+             replaces them with the projects managed from the mobile app. -->
+        <ul class="work__grid" id="work-grid" role="list">
           <li class="reveal">
             <article class="card card--wide">
               <button class="card__btn" type="button" data-project="residential-hvac" aria-haspopup="dialog">
@@ -266,6 +284,27 @@
             </article>
           </li>
         </ul>
+
+        <template id="card-template">
+          <li class="reveal">
+            <article class="card">
+              <button class="card__btn" type="button" aria-haspopup="dialog">
+                <figure class="card__media">
+                  <img alt="" loading="lazy" width="800" height="560">
+                </figure>
+                <div class="card__body">
+                  <div class="card__meta"><span class="card__num"></span><span class="card__cat"></span></div>
+                  <h3 class="card__title"></h3>
+                  <p class="card__desc"></p>
+                  <div class="card__more">
+                    <p class="card__tools"></p>
+                    <span class="card__link">View project <span aria-hidden="true">→</span></span>
+                  </div>
+                </div>
+              </button>
+            </article>
+          </li>
+        </template>
       </div>
     </section>
 
@@ -273,21 +312,23 @@
     <section class="about section" id="about" aria-labelledby="about-title">
       <div class="container about__inner">
         <figure class="about__visual reveal">
-          <img src="assets/JAB506.png" alt="Portrait of Juaren A. Balingit" width="600" height="750" loading="lazy">
+          <div class="about__frame">
+            <img src="assets/JAB506.webp" alt="Portrait of Juaren A. Balingit" width="900" height="1125" loading="lazy">
+          </div>
           <figcaption class="about__caption">J. A. Balingit — Registered ME</figcaption>
         </figure>
 
         <div class="about__text">
           <p class="section-index reveal" aria-hidden="true">02 — Profile</p>
           <h2 class="section-title reveal" id="about-title">About Me</h2>
-          <p class="about__lead reveal">Registered Mechanical Engineer with experience in facility engineering and AutoCAD drafting. My background includes HVAC-related technical drawings, duct system layouts, engineering documentation, equipment monitoring, and coordination with contractors and service providers.</p>
+          <p class="about__lead reveal">Registered Mechanical Engineer with over a year and a half of combined experience in facility engineering and AutoCAD drafting. I’ve kept a mall’s HVAC, pumps, generators and plumbing running, coordinated contractors and service providers, and produced the mechanical and HVAC drawings that projects are built from.</p>
           <ul class="traits reveal" role="list">
             <li>Detail-oriented</li>
-            <li>Hardworking</li>
-            <li>Eager to learn</li>
-            <li>Practical problem solving</li>
-            <li>Strong documentation skills</li>
-            <li>Willing to grow as a Mechanical Engineer</li>
+            <li>Problem solving</li>
+            <li>Clear communication</li>
+            <li>Leadership</li>
+            <li>Time management</li>
+            <li>Willing to do fieldwork and site inspections</li>
           </ul>
         </div>
       </div>
@@ -306,10 +347,10 @@
           <div class="skill-group reveal">
             <h3 class="skill-group__title"><span aria-hidden="true">A</span>CAD &amp; Design</h3>
             <ul class="skill-list" role="list">
-              <li class="skill"><button class="skill__btn" type="button" aria-expanded="false">AutoCAD</button><p class="skill__info">Daily drafting tool for plans, details and revisions — layers, blocks, xrefs and plotting to standard.</p></li>
               <li class="skill"><button class="skill__btn" type="button" aria-expanded="false">Mechanical Drafting</button><p class="skill__info">Producing plans, sections and details that contractors can install from without guesswork.</p></li>
               <li class="skill"><button class="skill__btn" type="button" aria-expanded="false">HVAC Drafting</button><p class="skill__info">Duct layouts, diffuser placement, equipment schedules and coordination with architectural backgrounds.</p></li>
               <li class="skill"><button class="skill__btn" type="button" aria-expanded="false">Technical Drawing</button><p class="skill__info">Orthographic views, dimensioning and annotation that follow drafting conventions.</p></li>
+              <li class="skill"><button class="skill__btn" type="button" aria-expanded="false">Drawing Interpretation</button><p class="skill__info">Reading engineering drawings and specifications to check accuracy, compliance and what’s actually installed on site.</p></li>
               <li class="skill"><button class="skill__btn" type="button" aria-expanded="false">3D Modeling</button><p class="skill__info">Building solid models to check fit, visualise assemblies and generate 2D views.</p></li>
             </ul>
           </div>
@@ -321,14 +362,24 @@
               <li class="skill"><button class="skill__btn" type="button" aria-expanded="false">Facility Engineering</button><p class="skill__info">Keeping building systems running — operations, inspections and response to tenant concerns.</p></li>
               <li class="skill"><button class="skill__btn" type="button" aria-expanded="false">Mechanical Systems</button><p class="skill__info">Understanding pumps, fans, piping and equipment well enough to operate, inspect and document them.</p></li>
               <li class="skill"><button class="skill__btn" type="button" aria-expanded="false">Preventive Maintenance</button><p class="skill__info">Scheduled checks and servicing that catch problems before they become downtime.</p></li>
-              <li class="skill"><button class="skill__btn" type="button" aria-expanded="false">Technical Documentation</button><p class="skill__info">Reports, inspection records and maintenance logs that are clear, complete and easy to audit.</p></li>
+              <li class="skill"><button class="skill__btn" type="button" aria-expanded="false">Technical Documentation</button><p class="skill__info">Daily reports, Root Cause Analysis (RCA), maintenance records and inspection logs that are clear, complete and easy to audit.</p></li>
             </ul>
           </div>
 
           <div class="skill-group reveal">
-            <h3 class="skill-group__title"><span aria-hidden="true">C</span>Software</h3>
+            <h3 class="skill-group__title"><span aria-hidden="true">C</span>Site &amp; Projects</h3>
             <ul class="skill-list" role="list">
-              <li class="skill"><button class="skill__btn" type="button" aria-expanded="false">AutoCAD</button><p class="skill__info">Primary software for 2D drafting, revisions and sheet production.</p></li>
+              <li class="skill"><button class="skill__btn" type="button" aria-expanded="false">Site Inspection</button><p class="skill__info">Routine walkdowns of equipment and plant areas to spot maintenance needs before they cause downtime.</p></li>
+              <li class="skill"><button class="skill__btn" type="button" aria-expanded="false">Contractor Coordination</button><p class="skill__info">Scheduling preventive and corrective work with contractors and checking it against specifications and safety standards.</p></li>
+              <li class="skill"><button class="skill__btn" type="button" aria-expanded="false">Construction Monitoring</button><p class="skill__info">Following work on site so what gets built matches the drawings and the approved revisions.</p></li>
+              <li class="skill"><button class="skill__btn" type="button" aria-expanded="false">Progress Reporting</button><p class="skill__info">Keeping engineers, owners and project teams updated with clear, timely status reports.</p></li>
+            </ul>
+          </div>
+
+          <div class="skill-group reveal">
+            <h3 class="skill-group__title"><span aria-hidden="true">D</span>Software</h3>
+            <ul class="skill-list" role="list">
+              <li class="skill"><button class="skill__btn" type="button" aria-expanded="false">AutoCAD (2D)</button><p class="skill__info">Daily drafting tool for plans, details and revisions — layers, blocks, xrefs and plotting to standard.</p></li>
               <li class="skill"><button class="skill__btn" type="button" aria-expanded="false">Microsoft Office</button><p class="skill__info">Word for reports, Excel for logs and schedules, PowerPoint for presenting findings.</p></li>
               <li class="skill"><button class="skill__btn" type="button" aria-expanded="false">SketchUp</button><p class="skill__info">Quick 3D massing and visualisation to communicate layouts and spatial ideas.</p></li>
               <li class="skill"><button class="skill__btn" type="button" aria-expanded="false">Autodesk Inventor</button><p class="skill__info">Parametric part and assembly modeling with drawings generated from the model.</p></li>
@@ -350,37 +401,67 @@
           <li class="timeline__item reveal">
             <div class="timeline__marker" aria-hidden="true"></div>
             <div class="timeline__head">
-              <p class="timeline__tag">Facility Engineering</p>
+              <p class="timeline__tag">Aug 2024 — Dec 2024</p>
               <h3 class="timeline__role">Mall Engineer</h3>
+              <p class="timeline__org">Robinsons Land Corporation</p>
             </div>
             <ul class="timeline__list" role="list">
-              <li>HVAC system monitoring and maintenance</li>
-              <li>Facility operations</li>
-              <li>Equipment monitoring</li>
-              <li>Maintenance documentation</li>
-              <li>Engineering reports</li>
-              <li>Contractor and service-provider coordination</li>
-              <li>Tenant concerns</li>
-              <li>Equipment inspection records</li>
+              <li>Monitored daily operation of HVAC systems, pumps, generators, plumbing and other building mechanical equipment.</li>
+              <li>Ran routine equipment inspections and flagged maintenance needs before they caused downtime.</li>
+              <li>Coordinated preventive and corrective maintenance with contractors and service providers.</li>
+              <li>Helped supervise contractor work and verified compliance with specifications and safety standards.</li>
+              <li>Responded to tenant engineering concerns and arranged timely repairs.</li>
+              <li>Prepared daily engineering reports, Root Cause Analyses (RCA), maintenance records and inspection documentation.</li>
+              <li>Recommended operational improvements for equipment reliability, efficiency and safety.</li>
             </ul>
           </li>
 
           <li class="timeline__item reveal">
             <div class="timeline__marker" aria-hidden="true"></div>
             <div class="timeline__head">
-              <p class="timeline__tag">CAD Drafting</p>
-              <h3 class="timeline__role">AutoCAD Operator</h3>
+              <p class="timeline__tag">Jul 2022 — Jul 2023</p>
+              <h3 class="timeline__role">CAD Operator</h3>
+              <p class="timeline__org">KCC Property Holding Inc.</p>
             </div>
             <ul class="timeline__list" role="list">
-              <li>HVAC-related technical drawings</li>
-              <li>Duct system layouts</li>
-              <li>AutoCAD drafting</li>
-              <li>Drawing revisions</li>
-              <li>Technical documentation</li>
-              <li>Review of drawings and specifications</li>
+              <li>Prepared detailed mechanical and HVAC drawings in AutoCAD.</li>
+              <li>Reviewed engineering drawings and technical specifications for accuracy and compliance.</li>
+              <li>Revised drawings to match engineering requirements and project updates.</li>
+              <li>Worked with engineers and project teams to make sure design revisions were implemented correctly.</li>
+              <li>Organized drawings and project documentation for efficient project control.</li>
+            </ul>
+          </li>
+
+          <li class="timeline__item reveal">
+            <div class="timeline__marker" aria-hidden="true"></div>
+            <div class="timeline__head">
+              <p class="timeline__tag">2019 — 2024</p>
+              <h3 class="timeline__role">Education &amp; License</h3>
+            </div>
+            <ul class="timeline__list timeline__list--creds" role="list">
+              <li>
+                <span class="cred__year">2024</span>
+                <span><strong>Registered Mechanical Engineer</strong>Professional Regulation Commission (PRC), Philippines</span>
+              </li>
+              <li>
+                <span class="cred__year">2019 — 2022</span>
+                <span><strong>BS Mechanical Engineering</strong>Mindanao Polytechnic College, General Santos City</span>
+              </li>
             </ul>
           </li>
         </ol>
+      </div>
+    </section>
+
+    <!-- ============ RESUME CTA ============ -->
+    <section class="cta" aria-labelledby="cta-title">
+      <div class="container cta__inner reveal">
+        <h2 class="cta__title" id="cta-title">Interested in working together?</h2>
+        <p class="cta__text">Get the full picture of my experience, skills and credentials in one page.</p>
+        <div class="cta__actions">
+          <a class="btn btn--primary" href="assets/Juaren_A_Balingit_Resume.pdf" download>Download resume <span class="btn__arrow" aria-hidden="true">↓</span></a>
+          <a class="btn btn--ghost" href="#contact">Contact me <span class="btn__arrow" aria-hidden="true">→</span></a>
+        </div>
       </div>
     </section>
 
@@ -412,8 +493,6 @@
 
             <ul class="contact__social" role="list">
               <li><a class="social-link" href="https://www.facebook.com/profile.php?id=61593869482601" target="_blank" rel="noopener noreferrer">Facebook <span aria-hidden="true">↗</span><span class="visually-hidden">(opens in a new tab)</span></a></li>
-              <li><span class="social-link is-soon">LinkedIn <em>— Coming Soon</em></span></li>
-              <li><span class="social-link is-soon">Portfolio / GitHub <em>— Coming Soon</em></span></li>
             </ul>
           </div>
         </div>
@@ -459,18 +538,6 @@
         </form>
       </div>
     </section>
-
-    <!-- ============ RESUME CTA ============ -->
-    <section class="cta" aria-labelledby="cta-title">
-      <div class="container cta__inner reveal">
-        <h2 class="cta__title" id="cta-title">Interested in working together?</h2>
-        <p class="cta__text">View my professional experience, technical skills, and engineering background.</p>
-        <div class="cta__actions">
-          <a class="btn btn--primary" href="assets/Juaren_A_Balingit_Resume.pdf" download>Download resume <span class="btn__arrow" aria-hidden="true">↓</span></a>
-          <a class="btn btn--ghost" href="#contact">Contact me <span class="btn__arrow" aria-hidden="true">→</span></a>
-        </div>
-      </div>
-    </section>
   </main>
 
   <!-- ============ FOOTER ============ -->
@@ -487,8 +554,7 @@
       </ul>
       <ul class="footer__list" role="list">
         <li><a href="https://www.facebook.com/profile.php?id=61593869482601" target="_blank" rel="noopener noreferrer">Facebook <span aria-hidden="true">↗</span><span class="visually-hidden">(opens in a new tab)</span></a></li>
-        <li class="is-soon">LinkedIn — Coming Soon</li>
-        <li class="is-soon">Portfolio/GitHub — Coming Soon</li>
+        <li><a href="assets/Juaren_A_Balingit_Resume.pdf" download>Resume (PDF) <span aria-hidden="true">↓</span></a></li>
       </ul>
     </div>
     <div class="container footer__base">
@@ -513,6 +579,8 @@
         <div class="card__meta"><span class="card__num" id="modal-num"></span><span class="card__cat" id="modal-cat"></span></div>
         <h2 class="modal__title" id="modal-title"></h2>
         <p class="modal__overview" id="modal-overview"></p>
+
+        <div class="modal__files" id="modal-files" hidden></div>
 
         <div class="modal__cols">
           <section>
@@ -544,6 +612,7 @@
     </div>
   </dialog>
 
-  <script src="js/main.js" defer></script>
+  <script type="module" src="js/main.js"></script>
+  <script type="module" src="src/main.jsx"></script>
 </body>
 </html>

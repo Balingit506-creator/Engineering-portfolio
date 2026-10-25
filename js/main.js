@@ -1,4 +1,6 @@
 /* Juaren A. Balingit — Portfolio interactions */
+import { remoteEnabled, fetchProjects, fileUrl, previewSource } from "./projects-remote.js";
+
 (() => {
   "use strict";
 
@@ -253,21 +255,18 @@
   /* ------------------------------------------------------------------
      Scroll reveal
      ------------------------------------------------------------------ */
-  const reveals = $$(".reveal");
+  const revealIO = reduceMotion.matches ? null : new IntersectionObserver((entries) => {
+    entries.forEach((en) => {
+      if (en.isIntersecting) { en.target.classList.add("is-visible"); revealIO.unobserve(en.target); }
+    });
+  }, { rootMargin: "0px 0px -8% 0px", threshold: 0.12 });
+  const reveal = (el) => (revealIO ? revealIO.observe(el) : el.classList.add("is-visible"));
   // Stagger siblings slightly (grid cards, skill groups)
-  $$(".work__grid, .skills__grid").forEach((group) => {
+  const stagger = (group) => {
     Array.from(group.children).forEach((el, i) => el.style.setProperty("--reveal-delay", `${(i % 2) * 90}ms`));
-  });
-  if (reduceMotion.matches) {
-    reveals.forEach((el) => el.classList.add("is-visible"));
-  } else {
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach((en) => {
-        if (en.isIntersecting) { en.target.classList.add("is-visible"); io.unobserve(en.target); }
-      });
-    }, { rootMargin: "0px 0px -8% 0px", threshold: 0.12 });
-    reveals.forEach((el) => io.observe(el));
-  }
+  };
+  $$(".work__grid, .skills__grid").forEach(stagger);
+  $$(".reveal").forEach(reveal);
 
   /* ------------------------------------------------------------------
      Skills: hover shows details on pointer devices; click/tap/Enter toggles
@@ -292,6 +291,9 @@
 
   const el = (tag, text) => Object.assign(document.createElement(tag), { textContent: text });
 
+  // Hides a detail block when the project has nothing to put in it.
+  const showIf = (node, hasContent) => { (node.closest("section") ?? node).hidden = !hasContent; };
+
   const fill = (p, card) => {
     const img = $("img", card);
     modalImg.src = img.getAttribute("src");
@@ -308,6 +310,23 @@
       const row = document.createElement("div");
       row.append(el("dt", k), el("dd", v));
       return row;
+    }));
+    showIf($("#modal-overview"), p.overview);
+    showIf($("#modal-objective"), p.objective);
+    showIf($("#modal-result"), p.result);
+    showIf($("#modal-process"), p.process.length);
+    showIf($("#modal-tools"), p.tools.length);
+    showIf($("#modal-specs"), p.specs.length);
+
+    const files = p.files ?? [];
+    $("#modal-files").hidden = !files.length;
+    $("#modal-files").replaceChildren(...files.map((f) => {
+      const a = Object.assign(document.createElement("a"), { className: "btn btn--ghost btn--sm", href: f.href });
+      if (f.newTab) Object.assign(a, { target: "_blank", rel: "noopener noreferrer" });
+      const arrow = Object.assign(el("span", f.newTab ? "↗" : "↓"), { className: "btn__arrow" });
+      arrow.setAttribute("aria-hidden", "true");
+      a.append(f.label, " ", arrow);
+      return a;
     }));
   };
 
@@ -334,7 +353,11 @@
     setTimeout(() => modal.classList.contains("is-closing") && finish(), 300); // safety net
   };
 
-  $$("[data-project]").forEach((btn) => btn.addEventListener("click", () => openModal(btn)));
+  const grid = $("#work-grid");
+  grid.addEventListener("click", (e) => {
+    const btn = e.target.closest("[data-project]");
+    if (btn) openModal(btn);
+  });
   modal.addEventListener("click", (e) => {
     if (e.target === modal || e.target.closest("[data-close]")) closeModal();
   });
@@ -343,6 +366,74 @@
     document.body.classList.remove("modal-open");
     lastTrigger?.focus();
   });
+
+  /* ------------------------------------------------------------------
+     Projects from the mobile app (Supabase). The cards written into
+     index.html stay as the fallback if this is off, fails or is empty.
+     ------------------------------------------------------------------ */
+  const cardTemplate = $("#card-template");
+
+  const buildCard = (p, index) => {
+    const li = cardTemplate.content.firstElementChild.cloneNode(true);
+    const btn = $(".card__btn", li);
+    $(".card", li).classList.toggle("card--wide", p.featured);
+    btn.dataset.project = p.id;
+    $("img", li).alt = p.alt || `${p.title} — drawing`;
+    $(".card__num", li).textContent = String(index + 1).padStart(2, "0");
+    $(".card__cat", li).textContent = p.category;
+    $(".card__title", li).textContent = p.title;
+    $(".card__desc", li).textContent = p.summary;
+    $(".card__tools", li).textContent = p.tools.join(" · ");
+    return li;
+  };
+
+  const detailsFor = (p) => {
+    const files = [];
+    if (p.dwg_path) files.push({ label: "Download DWG", href: fileUrl(p.dwg_path, p.dwg_name || `${p.title}.dwg`) });
+    if (p.preview_path && p.preview_type === "pdf") files.push({ label: "Open PDF", href: fileUrl(p.preview_path), newTab: true });
+    return {
+      overview: p.overview, objective: p.objective, result: p.result,
+      process: p.process ?? [], tools: p.tools ?? [], specs: p.specs ?? [], files
+    };
+  };
+
+  const setPreview = async (img, p, renderPdf) => {
+    const src = previewSource(p);
+    if (!src) return;
+    if (!src.isPdf) { img.src = src.url; return; }
+    try {
+      img.src = await renderPdf(src.url);
+    } catch (err) {
+      console.warn(`Could not render the PDF preview for "${p.title}".`, err);
+      img.removeAttribute("src"); // unreadable PDF: keep the empty frame
+    }
+  };
+
+  const loadRemoteProjects = async () => {
+    if (!remoteEnabled) return;
+    let projects;
+    try {
+      projects = await fetchProjects();
+    } catch (err) {
+      console.warn("Could not load projects from Supabase; showing the built-in ones.", err);
+      return;
+    }
+    if (!projects.length) return;
+
+    const hasPdf = projects.some((p) => previewSource(p)?.isPdf);
+    const renderPdf = hasPdf ? (await import("./pdf-preview.js")).renderPdfPreview : null;
+
+    const cards = projects.map((p, i) => {
+      PROJECTS[p.id] = detailsFor(p);
+      const card = buildCard(p, i);
+      setPreview($("img", card), p, renderPdf);
+      return card;
+    });
+    grid.replaceChildren(...cards);
+    stagger(grid);
+    cards.forEach(reveal);
+  };
+  loadRemoteProjects();
 
   /* ------------------------------------------------------------------
      Contact form: validation + submission
