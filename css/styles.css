@@ -397,6 +397,7 @@ input, textarea { font: inherit; color: inherit; }
   transition: color var(--t-fast) var(--ease);
 }
 .hero__scroll:hover { color: var(--text); }
+@media (max-height: 920px) { .hero__scroll { display: none; } } /* would sit on the stats strip */
 .hero__scroll-line { width: 1px; height: 44px; background: var(--line-strong); position: relative; overflow: hidden; }
 .hero__scroll-line::after {
   content: ""; position: absolute; left: 0; top: -40%; width: 100%; height: 40%;

@@ -476,6 +476,11 @@ import { remoteEnabled, fetchProjects, fetchProfile, fileUrl, previewSource } fr
   };
 
   const applyProfile = (p) => {
+    if (p.photo_path) $(".about__frame img").src = fileUrl(p.photo_path);
+    if (p.resume_path) {
+      const href = fileUrl(p.resume_path, "Juaren_A_Balingit_Resume.pdf");
+      $$('a[href$="Juaren_A_Balingit_Resume.pdf"]').forEach((a) => { a.href = href; });
+    }
     if (p.availability) $("#hero-status").lastChild.textContent = p.availability;
     else $("#hero-status").hidden = true;
     if (p.facts?.length) {

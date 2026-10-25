@@ -31,6 +31,8 @@ create policy "Owner can edit site content"
 insert into public.site_content (key, value) values ('profile', $json$
 {
   "availability": "Open to engineering roles",
+  "photo_path": null,
+  "resume_path": null,
   "facts": [
     { "label": "License",    "value": "PRC Registered Mechanical Engineer · 2024" },
     { "label": "Experience", "value": "1.5+ years · Facilities & CAD" },

@@ -43,11 +43,11 @@ export type FileChanges = {
 const BUCKET = 'projects';
 const MAX_BYTES = 50 * 1024 * 1024; // Supabase free-plan limit per file
 
-const IMAGE_TYPES: Record<string, string> = {
+export const IMAGE_TYPES: Record<string, string> = {
   png: 'image/png', jpg: 'image/jpeg', jpeg: 'image/jpeg', webp: 'image/webp', svg: 'image/svg+xml',
 };
 
-const extension = (name: string) => name.split('.').pop()?.toLowerCase() ?? '';
+export const extension = (name: string) => name.split('.').pop()?.toLowerCase() ?? '';
 
 export function previewKind(file: PickedFile): 'image' | 'pdf' | null {
   const ext = extension(file.name);
@@ -84,19 +84,20 @@ export async function getProject(id: string): Promise<Project> {
   return data as Project;
 }
 
-async function upload(projectId: string, file: PickedFile, prefix: string, contentType: string) {
+/** Uploads into the projects bucket as <folder>/<prefix>-<time>-<name> and returns the path. */
+export async function upload(folder: string, file: PickedFile, prefix: string, contentType: string) {
   if (file.size && file.size > MAX_BYTES) {
     throw new Error(`${file.name} is ${(file.size / 1024 / 1024).toFixed(1)} MB; the limit is 50 MB.`);
   }
   const safeName = file.name.replace(/[^\w.-]+/g, '_');
-  const path = `${projectId}/${prefix}-${Date.now()}-${safeName}`;
+  const path = `${folder}/${prefix}-${Date.now()}-${safeName}`;
   const bytes = await new File(file.uri).arrayBuffer();
   const { error } = await supabase.storage.from(BUCKET).upload(path, bytes, { contentType });
   if (error) throw new Error(`Upload of ${file.name} failed: ${explain(error.message)}`);
   return path;
 }
 
-async function removeFiles(paths: (string | null | undefined)[]) {
+export async function removeFiles(paths: (string | null | undefined)[]) {
   const existing = paths.filter((p): p is string => Boolean(p));
   if (existing.length) await supabase.storage.from(BUCKET).remove(existing);
 }

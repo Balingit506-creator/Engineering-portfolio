@@ -1,9 +1,12 @@
+import * as DocumentPicker from 'expo-document-picker';
+import { Image } from 'expo-image';
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, Alert, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
 
-import { Button, Field } from '@/components/ui';
-import { emptyProfile, getProfile, saveProfile, type Credential, type Job, type Profile, type Service } from '@/lib/content';
+import { Button, Field, Label } from '@/components/ui';
+import { emptyProfile, getProfile, isImage, isPdf, saveProfile, type Credential, type Job, type Profile, type Service } from '@/lib/content';
+import { publicUrl, type PickedFile } from '@/lib/projects';
 import { colors, fonts } from '@/lib/theme';
 
 const lines = (text: string) => text.split('\n').map((l) => l.trim()).filter(Boolean);
@@ -30,7 +33,15 @@ const toForm = (p: Profile): Form => ({
   credentials: p.credentials,
 });
 
-const toProfile = (f: Form): Profile => ({
+async function pickFile(type: string | string[]): Promise<PickedFile | null> {
+  const res = await DocumentPicker.getDocumentAsync({ type, copyToCacheDirectory: true });
+  if (res.canceled) return null;
+  const a = res.assets[0];
+  return { uri: a.uri, name: a.name, mimeType: a.mimeType, size: a.size };
+}
+
+const toProfile = (f: Form, base: Profile): Profile => ({
+  ...base,
   availability: f.availability.trim(),
   facts: lines(f.facts).map((line) => {
     const at = line.indexOf(':');
@@ -47,13 +58,16 @@ const toProfile = (f: Form): Profile => ({
 });
 
 export default function SiteContent() {
+  const [profile, setProfile] = useState<Profile>(emptyProfile);
   const [form, setForm] = useState<Form>(toForm(emptyProfile));
+  const [photo, setPhoto] = useState<PickedFile>();
+  const [resume, setResume] = useState<PickedFile>();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     getProfile()
-      .then((p) => setForm(toForm(p ?? emptyProfile)))
+      .then((p) => { setProfile(p ?? emptyProfile); setForm(toForm(p ?? emptyProfile)); })
       .catch((e) => Alert.alert('Could not load site content', message(e), [{ text: 'OK', onPress: () => router.back() }]))
       .finally(() => setLoading(false));
   }, []);
@@ -68,10 +82,23 @@ export default function SiteContent() {
   const remove = (key: 'jobs' | 'credentials' | 'services', i: number) =>
     setForm((f) => ({ ...f, [key]: f[key].filter((_, k) => k !== i) }));
 
+  const choosePhoto = async () => {
+    const f = await pickFile('image/*');
+    if (!f) return;
+    if (!isImage(f)) return Alert.alert('Unsupported file', 'Choose a JPG, PNG or WebP photo.');
+    setPhoto(f);
+  };
+  const chooseResume = async () => {
+    const f = await pickFile('application/pdf');
+    if (!f) return;
+    if (!isPdf(f)) return Alert.alert('Not a PDF', 'The resume must be a PDF file.');
+    setResume(f);
+  };
+
   const save = async () => {
     setSaving(true);
     try {
-      await saveProfile(toProfile(form));
+      await saveProfile(toProfile(form, profile), { photo, resume });
       router.back();
     } catch (e) {
       Alert.alert('Could not save', message(e));
@@ -91,6 +118,23 @@ export default function SiteContent() {
   return (
     <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
       <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
+        <Text style={styles.section}>Photo & resume</Text>
+        <Label>Portrait (About section)</Label>
+        {photo || profile.photo_path ? (
+          <Image source={{ uri: photo ? photo.uri : publicUrl(profile.photo_path!) }} style={styles.photo} contentFit="cover" />
+        ) : (
+          <Text style={styles.hint}>Using the photo built into the website.</Text>
+        )}
+        <Button title={photo ? `New: ${photo.name}` : 'Choose photo'} variant="ghost" onPress={choosePhoto} />
+        <Text style={styles.hint}>Portrait orientation works best (4:5, like an ID photo).</Text>
+
+        <View style={{ height: 16 }} />
+        <Label>Resume (PDF)</Label>
+        <Text style={styles.hint}>
+          {resume ? `New: ${resume.name}` : profile.resume_path ? `Current: ${profile.resume_path.split('/').pop()}` : 'Using the resume built into the website.'}
+        </Text>
+        <Button title="Choose resume PDF" variant="ghost" onPress={chooseResume} />
+
         <Text style={styles.section}>Hero</Text>
         <Field label="Availability" value={form.availability} onChangeText={set('availability')} hint="Shown as the green-dot badge. Leave empty to hide it." />
 
@@ -159,6 +203,7 @@ const styles = StyleSheet.create({
     borderBottomColor: colors.line,
   },
   hint: { color: colors.muted, fontSize: 13, lineHeight: 18, marginBottom: 16 },
+  photo: { width: 160, aspectRatio: 4 / 5, borderRadius: 4, backgroundColor: colors.surface, marginBottom: 12 },
   block: {
     borderWidth: 1,
     borderColor: colors.line,
