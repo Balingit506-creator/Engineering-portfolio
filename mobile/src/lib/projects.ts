@@ -58,6 +58,12 @@ export function previewKind(file: PickedFile): 'image' | 'pdf' | null {
 
 export const isDwg = (file: PickedFile) => extension(file.name) === 'dwg';
 
+// Supabase reports a blocked write as a "row-level security" error; say what it means.
+const NOT_OWNER =
+  'This account isn’t allowed to change projects. Sign in with the owner email set in ' +
+  'is_portfolio_owner() (supabase/schema.sql).';
+const explain = (message: string) => (/row-level security/i.test(message) ? NOT_OWNER : message);
+
 export function publicUrl(path: string) {
   return supabase.storage.from(BUCKET).getPublicUrl(path).data.publicUrl;
 }
@@ -86,7 +92,7 @@ async function upload(projectId: string, file: PickedFile, prefix: string, conte
   const path = `${projectId}/${prefix}-${Date.now()}-${safeName}`;
   const bytes = await new File(file.uri).arrayBuffer();
   const { error } = await supabase.storage.from(BUCKET).upload(path, bytes, { contentType });
-  if (error) throw new Error(`Upload of ${file.name} failed: ${error.message}`);
+  if (error) throw new Error(`Upload of ${file.name} failed: ${explain(error.message)}`);
   return path;
 }
 
@@ -105,7 +111,7 @@ export async function createHiddenProject(fields: ProjectFields): Promise<Projec
     .insert({ ...fields, published: false })
     .select()
     .single();
-  if (error) throw error;
+  if (error) throw new Error(explain(error.message));
   return data as Project;
 }
 
@@ -138,8 +144,10 @@ export async function saveProject(project: Project, fields: ProjectFields, files
       replaced.push(project.dwg_path);
     }
 
-    const { error } = await supabase.from('projects').update(update).eq('id', project.id);
-    if (error) throw error;
+    // A blocked update isn't an error, it just changes no rows, so check what changed.
+    const { data, error } = await supabase.from('projects').update(update).eq('id', project.id).select('id');
+    if (error) throw new Error(explain(error.message));
+    if (!data?.length) throw new Error(NOT_OWNER);
   } catch (e) {
     // Nothing points at the new uploads yet, so don't leave them behind.
     await removeFiles(uploaded).catch(() => {});
@@ -152,7 +160,8 @@ export async function saveProject(project: Project, fields: ProjectFields, files
 }
 
 export async function deleteProject(project: Project) {
-  const { error } = await supabase.from('projects').delete().eq('id', project.id);
-  if (error) throw error;
+  const { data, error } = await supabase.from('projects').delete().eq('id', project.id).select('id');
+  if (error) throw new Error(explain(error.message));
+  if (!data?.length) throw new Error(NOT_OWNER);
   await removeFiles([project.preview_path, project.dwg_path]).catch(() => {});
 }
