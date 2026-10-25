@@ -210,9 +210,12 @@ import { remoteEnabled, fetchProjects, fetchProfile, fileUrl, previewSource } fr
   const menu = $("#nav-menu");
   const toTop = $("#to-top");
 
+  const progress = $("#progress");
   const onScroll = () => {
     const y = window.scrollY;
     nav.classList.toggle("is-scrolled", y > 24);
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    progress.style.transform = `scaleX(${max > 0 ? Math.min(y / max, 1) : 0})`;
     toTop.classList.toggle("is-visible", y > window.innerHeight * 0.9);
   };
   onScroll();
@@ -373,6 +376,56 @@ import { remoteEnabled, fetchProjects, fetchProfile, fileUrl, previewSource } fr
      ------------------------------------------------------------------ */
   const cardTemplate = $("#card-template");
 
+  /* Category filters, built from whatever categories the cards have. */
+  const filters = $("#work-filters");
+  const buildFilters = () => {
+    // Only categories with at least two projects get a button; a filter that shows one card is noise.
+    const counts = new Map();
+    $$(".card__cat", grid).forEach((c) => { const k = c.textContent.trim(); if (k) counts.set(k, (counts.get(k) ?? 0) + 1); });
+    const cats = [...counts].filter(([, n]) => n >= 2).map(([k]) => k);
+    if (!cats.length) { filters.hidden = true; return; }
+    const button = (label, value) => {
+      const b = el("button", label);
+      b.type = "button"; b.className = "filters__btn"; b.dataset.filter = value;
+      b.setAttribute("aria-pressed", String(value === "all"));
+      return b;
+    };
+    filters.replaceChildren(button("All", "all"), ...cats.map((c) => button(c, c)));
+    filters.hidden = false;
+  };
+  filters.addEventListener("click", (e) => {
+    const btn = e.target.closest(".filters__btn");
+    if (!btn) return;
+    $$(".filters__btn", filters).forEach((b) => b.setAttribute("aria-pressed", String(b === btn)));
+    const value = btn.dataset.filter;
+    $$("#work-grid > li").forEach((li) => {
+      const match = value === "all" || $(".card__cat", li).textContent.trim() === value;
+      li.hidden = !match;
+      if (match) li.classList.add("is-visible");
+    });
+  });
+  buildFilters();
+
+  /* Cursor-following highlight on cards (pointer devices only; CSS reads the vars). */
+  document.addEventListener("pointermove", (e) => {
+    const card = e.target.closest(".card__btn, .service");
+    if (!card) return;
+    const r = card.getBoundingClientRect();
+    card.style.setProperty("--mx", `${e.clientX - r.left}px`);
+    card.style.setProperty("--my", `${e.clientY - r.top}px`);
+  }, { passive: true });
+
+  /* Tools strip: duplicate the items once so the loop is seamless. */
+  const track = $("#ticker-track");
+  track.append(...Array.from(track.children).map((c) => Object.assign(c.cloneNode(true), { ariaHidden: "true" })));
+
+  /* Local time in the footer (General Santos City, GMT+8). */
+  const clock = $("#local-time");
+  const tick = () => {
+    clock.textContent = new Intl.DateTimeFormat("en-PH", { hour: "2-digit", minute: "2-digit", hour12: false, timeZone: "Asia/Manila" }).format(new Date());
+  };
+  tick(); setInterval(tick, 30_000);
+
   const buildCard = (p, index) => {
     const li = cardTemplate.content.firstElementChild.cloneNode(true);
     const btn = $(".card__btn", li);
@@ -432,6 +485,7 @@ import { remoteEnabled, fetchProjects, fetchProfile, fileUrl, previewSource } fr
     grid.replaceChildren(...cards);
     stagger(grid);
     cards.forEach(reveal);
+    buildFilters();
     $("#hero-projects").textContent = String(projects.length);
   };
   loadRemoteProjects();

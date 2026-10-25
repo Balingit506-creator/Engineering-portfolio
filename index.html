@@ -37,6 +37,7 @@
   <a class="skip-link" href="#main">Skip to content</a>
 
   <!-- ============ NAVIGATION ============ -->
+  <div class="progress" id="progress" aria-hidden="true"></div>
   <header class="nav" id="nav">
     <div class="nav__inner container">
       <a class="nav__logo" href="#top" aria-label="Juaren A. Balingit — back to top">
@@ -144,6 +145,13 @@
       </div>
     </section>
 
+    <!-- ============ TOOLS STRIP ============ -->
+    <div class="ticker" aria-label="Tools and systems">
+      <div class="ticker__track" id="ticker-track">
+        <span>AutoCAD</span><span>Autodesk Inventor</span><span>SketchUp</span><span>HVAC</span><span>Ductwork</span><span>Chilled water</span><span>Plumbing</span><span>Fire protection</span><span>Preventive maintenance</span><span>Root cause analysis</span><span>Microsoft Excel</span><span>Site inspection</span>
+      </div>
+    </div>
+
     <!-- ============ SELECTED WORK ============ -->
     <section class="work section" id="work" aria-labelledby="work-title">
       <div class="container">
@@ -152,6 +160,8 @@
           <h2 class="section-title reveal" id="work-title">Selected Work</h2>
           <p class="section-sub reveal">A collection of engineering and CAD projects focused on precision, clarity, and practical design.</p>
         </header>
+
+        <div class="filters reveal" id="work-filters" role="group" aria-label="Filter projects by category"></div>
 
         <!-- These cards are the fallback. When Supabase is configured, js/main.js
              replaces them with the projects managed from the mobile app. -->
@@ -584,6 +594,7 @@
     </div>
     <div class="container footer__base">
       <p>© 2026 Juaren A. Balingit. All Rights Reserved.</p>
+      <p class="footer__time"><span class="footer__time-dot" aria-hidden="true"></span>General Santos City · <time id="local-time">--:--</time> GMT+8</p>
     </div>
   </footer>
 
