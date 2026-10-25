@@ -1,5 +1,5 @@
 /* Juaren A. Balingit — Portfolio interactions */
-import { remoteEnabled, fetchProjects, fileUrl, previewSource } from "./projects-remote.js";
+import { remoteEnabled, fetchProjects, fetchProfile, fileUrl, previewSource } from "./projects-remote.js";
 
 (() => {
   "use strict";
@@ -432,8 +432,75 @@ import { remoteEnabled, fetchProjects, fileUrl, previewSource } from "./projects
     grid.replaceChildren(...cards);
     stagger(grid);
     cards.forEach(reveal);
+    $("#hero-projects").textContent = String(projects.length);
   };
   loadRemoteProjects();
+
+  /* ------------------------------------------------------------------
+     Profile text from the mobile app (intro facts, About, Experience,
+     Education). The HTML stays as the fallback.
+     ------------------------------------------------------------------ */
+  const definition = (label, value) => {
+    const row = document.createElement("div");
+    row.append(el("dt", label), el("dd", value));
+    return row;
+  };
+
+  const renderJob = (job) => {
+    const li = el("li");
+    li.className = "timeline__item reveal";
+    const marker = el("div"); marker.className = "timeline__marker"; marker.setAttribute("aria-hidden", "true");
+    const head = el("div"); head.className = "timeline__head";
+    const tag = el("p", job.period); tag.className = "timeline__tag";
+    const role = el("h3", job.role); role.className = "timeline__role";
+    head.append(tag, role);
+    if (job.org) { const org = el("p", job.org); org.className = "timeline__org"; head.append(org); }
+    const list = el("ul"); list.className = "timeline__list"; list.setAttribute("role", "list");
+    list.replaceChildren(...(job.bullets ?? []).map((b) => el("li", b)));
+    li.append(marker, head, list);
+    return li;
+  };
+
+  const renderCredentials = (creds) => {
+    const li = renderJob({ period: creds.map((c) => c.period).filter(Boolean).at(-1) ?? "", role: "Education & License", bullets: [] });
+    const list = $(".timeline__list", li);
+    list.classList.add("timeline__list--creds");
+    list.replaceChildren(...creds.map((c) => {
+      const row = el("li");
+      const year = el("span", c.period); year.className = "cred__year";
+      const text = el("span"); text.append(el("strong", c.title), c.org ?? "");
+      row.append(year, text);
+      return row;
+    }));
+    return li;
+  };
+
+  const applyProfile = (p) => {
+    if (p.availability) $("#hero-status").lastChild.textContent = p.availability;
+    else $("#hero-status").hidden = true;
+    if (p.facts?.length) {
+      $("#intro-facts").replaceChildren(...p.facts.map((f) => definition(f.label, f.value)));
+      const stat = (label) => p.facts.find((f) => f.label.toLowerCase() === label)?.value;
+      $$("#hero-stats dt").forEach((dt) => {
+        const v = stat(dt.textContent.toLowerCase());
+        if (v && dt.nextElementSibling.id !== "hero-projects") dt.nextElementSibling.textContent = v.split("·")[0].trim();
+      });
+    }
+    if (p.about?.lead) $("#about-lead").textContent = p.about.lead;
+    if (p.about?.traits?.length) $("#about-traits").replaceChildren(...p.about.traits.map((t) => el("li", t)));
+    const items = (p.experience ?? []).map(renderJob);
+    if (p.credentials?.length) items.push(renderCredentials(p.credentials));
+    if (items.length) {
+      $("#timeline").replaceChildren(...items);
+      items.forEach(reveal);
+    }
+  };
+
+  if (remoteEnabled) {
+    fetchProfile()
+      .then((p) => p && applyProfile(p))
+      .catch((err) => console.warn("Could not load site content from Supabase; showing the built-in text.", err));
+  }
 
   /* ------------------------------------------------------------------
      Contact form: validation + submission

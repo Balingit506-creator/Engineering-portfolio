@@ -17,6 +17,16 @@ export async function fetchProjects() {
   return res.json();
 }
 
+// Editable site text (intro facts, About, Experience, Education); see supabase/site-content.sql.
+export async function fetchProfile() {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/site_content?select=value&key=eq.profile`, {
+    headers: { apikey: SUPABASE_KEY, Accept: "application/json" }
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  const rows = await res.json();
+  return rows[0]?.value ?? null;
+}
+
 // Public URL of a file in the bucket; `downloadAs` makes the browser save it under that name.
 export function fileUrl(path, downloadAs) {
   const encoded = path.split("/").map(encodeURIComponent).join("/");

@@ -36,11 +36,15 @@ the page opens, so changes made in the app appear on the next page load. You don
 The cards written into `index.html` (with details in the `PROJECTS` object in `js/main.js`) are
 the fallback. They show when Supabase isn't configured, can't be reached, or has no published projects.
 
+The app also edits the site text (availability badge, intro facts, About, Experience,
+Education) through **Site content** at the top of the project list. It's stored as one JSON
+document in the `site_content` table (`supabase/site-content.sql`).
+
 ### One-time setup
 1. **Create the backend.** Sign up at [supabase.com](https://supabase.com) and create a free project.
    Open *SQL Editor → New query*, paste all of `supabase/schema.sql` and click *Run*. This creates
    the `projects` table, the `projects` file bucket, the security rules, and copies in the 8
-   existing projects.
+   existing projects. Then run `supabase/site-content.sql` the same way.
 2. **Create your login.** *Authentication → Users → Add user → Create new user* with
    **506balingit@gmail.com** and a password, ticking *Auto confirm user*. Only this email can change
    anything (to use another, edit `is_portfolio_owner()` at the top of `schema.sql` and run it again).

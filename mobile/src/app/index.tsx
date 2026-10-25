@@ -52,7 +52,18 @@ export default function ProjectList() {
         contentContainerStyle={styles.list}
         contentInsetAdjustmentBehavior="automatic"
         refreshControl={<RefreshControl refreshing={loading} onRefresh={load} tintColor={colors.accent} />}
-        ListHeaderComponent={error ? <Text style={styles.error}>{error}</Text> : undefined}
+        ListHeaderComponent={
+          <>
+            <Pressable onPress={() => router.push('/content')} style={({ pressed }) => [styles.contentLink, pressed && { opacity: 0.7 }]}>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.contentTitle}>Site content</Text>
+                <Text style={styles.contentSub}>Availability, intro facts, About, Experience, Education</Text>
+              </View>
+              <Text style={styles.headerAction}>Edit →</Text>
+            </Pressable>
+            {error ? <Text style={styles.error}>{error}</Text> : null}
+          </>
+        }
         ListEmptyComponent={
           loading ? undefined : (
             <View style={styles.empty}>
@@ -109,6 +120,13 @@ const styles = StyleSheet.create({
   headerAction: { ...fonts.mono, color: colors.accent, fontSize: 14 },
   headerMuted: { color: colors.muted, fontSize: 14 },
   error: { color: colors.danger, padding: 16 },
+  contentLink: {
+    flexDirection: 'row', alignItems: 'center', gap: 12,
+    margin: 16, marginBottom: 8, padding: 14,
+    borderWidth: 1, borderColor: colors.lineStrong, borderRadius: 4, backgroundColor: colors.bg2,
+  },
+  contentTitle: { color: colors.text, fontSize: 16 },
+  contentSub: { color: colors.muted, fontSize: 12, marginTop: 2 },
   empty: { padding: 24, gap: 16 },
   emptyText: { color: colors.muted, fontSize: 16 },
   row: {

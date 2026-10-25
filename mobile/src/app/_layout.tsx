@@ -44,6 +44,7 @@ export default function RootLayout() {
         <Stack.Protected guard={Boolean(session)}>
           <Stack.Screen name="index" options={{ title: 'Projects' }} />
           <Stack.Screen name="project/[id]" options={{ title: 'Project' }} />
+          <Stack.Screen name="content" options={{ title: 'Site content' }} />
         </Stack.Protected>
         <Stack.Protected guard={!session}>
           <Stack.Screen name="login" options={{ headerShown: false }} />
