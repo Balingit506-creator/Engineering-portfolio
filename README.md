@@ -8,6 +8,17 @@ Site: `index.html`, `css/styles.css`, `js/main.js`, built with Vite. React compo
     npm run build      # production build in dist/ — deploy this folder
     npm run preview    # serve the production build locally
 
+## Hosting (Render)
+The site is a Render **Static Site** that rebuilds on every push to `main`:
+
+| Setting | Value |
+|---|---|
+| Build command | `npm ci && npm run build` |
+| Publish directory | `dist` |
+| Environment | `VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY` (same as `.env`) |
+
+`.node-version` pins Node 24, which the Vite build needs.
+
 ## Assets
 | Path | What |
 |---|---|
